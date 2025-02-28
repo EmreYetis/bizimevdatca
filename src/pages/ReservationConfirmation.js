@@ -63,7 +63,7 @@ const ReservationConfirmation = () => {
     const formattedCheckInDate = formatDate(checkInDate);
     const formattedCheckOutDate = formatDate(checkOutDate);
     const totalPrice = calculateTotalPrice();
-    const depositAmount = totalPrice === parseInt(nightlyRate) ? parseInt(nightlyRate) : totalPrice / 2;
+    const depositAmount = totalPrice; // Ön ödeme artık her zaman toplam tutar
   
     const childrenSummary = children > 0 ? `- ${children} Çocuk\n` : '';
   
