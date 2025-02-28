@@ -70,7 +70,7 @@ const ReservationConfirmation = () => {
     // Banka bilgilerini oda tipine göre belirleme
     const bankDetails = roomType === 'Yamaç Ev' 
       ? `\n\nHESAP ADI:\nSERKAN SOYTOK - MURAT CENNET\n\nİBAN:\nTR29 0006 4000 0013 6600 3265 59\n\nGönderim sonrasında dekontunuzu rica ederiz`
-      : `\n\nHESAP ADI:\nZorlu yavuz aydeniz bizimev\n\nİBAN:\nTR84 0001 5001 5800 7324 2621 11\n\nVakıfbank datça şubesi\n\nGönderim sonrasında dekontunuzu rica ederiz`;
+      : `\n\nHESAP ADI:\nZorlu yavuz aydeniz bizimev\n\nİBAN:\nTR86 0006 4000 0013 6600 3774 28\n\nİş Bankası Datça şubesi\n\nGönderim sonrasında dekontunuzu rica ederiz`;
   
     let summary = `
 - ${capitalizeFullName(name)}
