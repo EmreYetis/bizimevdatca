@@ -1,0 +1,143 @@
+.beds-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px; /* Yataklar arasında boşluk */
+  }
+  
+  .bed {
+    border: 1px solid #ccc; /* Yatakların kenarları */
+    border-radius: 5px; /* Kenarları yuvarlat */
+    padding: 10px; /* İç boşluk */
+    width: 150px; /* Yatak genişliği */
+    background-color: #f9f9f9; /* Arka plan rengi */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Gölge efekti */
+  }
+
+  .form-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+
+  .form-row .col {
+    padding-right: 5px;
+  }
+
+  .form-row input.form-control {
+    height: 35px;
+  }
+
+  .form-control {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    width: 100%;
+  }
+
+  .form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    outline: none;
+  }
+
+  .form-control::placeholder {
+    color: #6c757d;
+    opacity: 0.8;
+  }
+
+  /* Input grupları için stil */
+  .col {
+    flex: 1;
+  }
+
+  /* Butonlar için stil */
+  .btn {
+    margin: 5px;
+    padding: 8px 16px;
+    border-radius: 4px;
+    transition: all 0.2s ease-in-out;
+  }
+
+  .btn-success:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  }
+
+  /* Sütunlar arası boşluk */
+  .col-md-4 {
+    padding: 20px;
+  }
+
+  /* Başlıklar için stil */
+  h3 {
+    margin-bottom: 20px;
+    color: #2c3e50;
+    font-size: 1.5rem;
+  }
+
+  .delete-btn {
+    padding: 2px 6px;
+    font-size: 12px;
+    line-height: 1;
+    border-radius: 4px;
+    margin-left: 5px;
+    min-width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .report-section {
+    background-color: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    border: 1px solid #dee2e6;
+    margin-top: 30px;
+  }
+
+  .report-preview {
+    background-color: white;
+    padding: 15px;
+    border-radius: 6px;
+    border: 1px solid #dee2e6;
+    margin-top: 15px;
+    min-height: 100px;
+  }
+
+  .gap-2 {
+    gap: 0.5rem;
+  }
+
+  h2 {
+    color: #333;
+    border-bottom: 2px solid #dee2e6;
+    padding-bottom: 10px;
+  }
+
+  h3 {
+    color: #495057;
+    font-size: 1.5rem;
+    margin-bottom: 15px;
+  }
+
+  .btn-group {
+    display: flex;
+    gap: 2px;
+    margin-left: 5px;
+  }
+
+  .btn-group .btn {
+    padding: 2px 6px;
+    font-size: 12px;
+    line-height: 1;
+  }
+
+  .btn-group .btn-sm {
+    min-width: 30px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
