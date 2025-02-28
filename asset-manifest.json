@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/easylatorv2/static/css/main.aa824644.css",
-    "main.js": "/easylatorv2/static/js/main.f857230e.js",
+    "main.js": "/easylatorv2/static/js/main.5eb73fe1.js",
     "index.html": "/easylatorv2/index.html",
     "main.aa824644.css.map": "/easylatorv2/static/css/main.aa824644.css.map",
-    "main.f857230e.js.map": "/easylatorv2/static/js/main.f857230e.js.map"
+    "main.5eb73fe1.js.map": "/easylatorv2/static/js/main.5eb73fe1.js.map"
   },
   "entrypoints": [
     "static/css/main.aa824644.css",
-    "static/js/main.f857230e.js"
+    "static/js/main.5eb73fe1.js"
   ]
 }
