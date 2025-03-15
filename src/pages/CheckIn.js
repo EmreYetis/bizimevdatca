@@ -9,7 +9,9 @@ const CheckIn = () => {
 📌 Wifi Bağlantı Ve Şifremiz
 
 bizimev_datca_misafir için - bizimevdatcakargi
+
 BizimEvDatçaKargı için - memduhamca
+
 📌 Restoran Hizmetimiz Ve Odaya Sipariş İçin 0533 266 10 99 noya ulaşabilirsiniz.
 
 📌 Plaj Havlusu Hizmetimiz Mevcuttur.
