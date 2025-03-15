@@ -9,15 +9,15 @@ const CheckIn = () => {
 📌 Wifi Bağlantı Ve Şifremiz
 
 bizimev_datca_misafir için - bizimevdatcakargi
-
 BizimEvDatçaKargı için - memduhamca
+📌 Restoran Hizmetimiz Ve Odaya Sipariş İçin 0533 266 10 99 noya ulaşabilirsiniz.
 
+📌 Plaj Havlusu Hizmetimiz Mevcuttur.
 
-📌 Restoran Hizmetimiz Ve Odaya Sipariş için 0533 266 10 99 noya ulaşabilirsiniz.
+📌 Minibar Kullanımı
+Minibarınızda eksik ya da talep ettiğiniz ürünleri bize bildirmeniz halinde, gün içinde stoklarımız doğrultusunda eksikler tamamlanacaktır.
 
-📌 Plaj Havlusu Hizmetimiz Mevcuttur
-
-📌Resepsiyonumuz 08.30 - 23.00 Saatleri Arasında Hizmet Vermektedir.
+📌 Resepsiyonumuz 08.30 - 23.00 Saatleri Arasında Hizmet Vermektedir.
 
 Keyif Dolu Tatil Dileriz ☘️
 
