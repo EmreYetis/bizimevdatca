@@ -27,7 +27,25 @@ const KapiGiris = () => {
   ];
 
   const handleSubmit = () => {
-    const formattedTelefon = telefon.replace(/(\d{4})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4');
+    // Telefon numarasını formatla - hem boşluklu hem bitişik yazılan numaralar için
+    let formattedTelefon = telefon;
+    
+    // Önce boşlukları kaldır
+    const cleanTelefon = telefon.replace(/\s/g, '');
+    
+    if (cleanTelefon.length === 11) {
+      // 11 haneli numara için: 0533 123 45 67
+      formattedTelefon = cleanTelefon.replace(/(\d{4})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4');
+    } else if (cleanTelefon.length === 10) {
+      // 10 haneli numara için: 533 123 45 67
+      formattedTelefon = cleanTelefon.replace(/(\d{3})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4');
+    } else if (cleanTelefon.length === 9) {
+      // 9 haneli numara için: 33 123 45 67
+      formattedTelefon = cleanTelefon.replace(/(\d{2})(\d{3})(\d{2})(\d{2})/, '$1 $2 $3 $4');
+    } else {
+      // Eğer formatlanamazsa orijinal numarayı kullan
+      formattedTelefon = telefon;
+    }
     
     const formatName = (name) => {
       return name
@@ -49,7 +67,8 @@ const KapiGiris = () => {
 
   const handleTelefonChange = (e) => {
     const value = e.target.value;
-    if (/^\d*$/.test(value) && value.length <= 11) {
+    // Rakamları ve boşlukları kabul et, maksimum 20 karakter
+    if (/^[\d\s]*$/.test(value) && value.length <= 20) {
       setTelefon(value);
     }
   };

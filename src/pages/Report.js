@@ -28,6 +28,37 @@ const Report = () => {
     return savedCheckIns ? JSON.parse(savedCheckIns) : [{ name: '', room: '' }];
   });
   const [reportMessage, setReportMessage] = useState('');
+  
+  // Oda tiplerini ve adlarını burada tanımlayalım
+  const roomTypes = {
+    'Vagon Ev': ['İnceburun', 'Gökliman', 'Armutlusu', 'Çetisuyu', 'İncirlin', 'Hurmalıbük', 'Sarıliman', 'Kızılbük', 'Değirmenbükü'],
+    'Taş Ev': ['İskaroz', 'İskorpit', 'Lopa'],
+    'Yamaç Ev': ['Yamaç Ev']
+  };
+
+  // Tüm oda isimlerini düz bir liste haline getir
+  const allRooms = Object.values(roomTypes).flat();
+  
+  // Konaklayanlar bölümünde dolu olan odaları al
+  const occupiedRooms = stayingGuests
+    .filter(guest => guest.room && guest.name)
+    .map(guest => guest.room);
+  
+  // Girişler için kullanılabilir odalar (konaklayanlar bölümünde olmayan odalar)
+  const availableRooms = allRooms.filter(room => !occupiedRooms.includes(room));
+  
+  // Çıkışlar için kullanılabilir odalar (konaklayanlar bölümünde olmayan odalar)
+  const checkOutRooms = allRooms.filter(room => !occupiedRooms.includes(room));
+  
+  // Girişler bölümünde zaten seçilmiş odaları al
+  const selectedCheckInRooms = checkIns
+    .filter(guest => guest.room && guest.name)
+    .map(guest => guest.room);
+  
+  // Çıkışlar bölümünde zaten seçilmiş odaları al
+  const selectedCheckOutRooms = checkOuts
+    .filter(guest => guest.room && guest.name)
+    .map(guest => guest.room);
 
   // Verileri localStorage'a kaydetme
   useEffect(() => {
@@ -134,6 +165,158 @@ ${date} / ${day}
     setCheckIns(prevCheckIns => [...prevCheckIns, { name: guest.name, room: guest.room }]);
   };
 
+
+  const printRoomReport = () => {
+    const printWindow = window.open('', '_blank');
+  
+    if (!printWindow) {
+      alert('Yeni pencere açılamadı. Pop-up engelleme ayarlarınızı kontrol edin.');
+      return;
+    }
+  
+    const today = new Date();
+    const formattedDate = today.toLocaleDateString('tr-TR', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit'
+    });
+  
+    let tableRows = '';
+  
+    Object.entries(roomTypes).forEach(([type, rooms]) => {
+      // Her oda tipi için sadece oda sayısı kadar satır span et
+      const totalRows = rooms.length;
+      
+            // İlk satır - oda tipi ve ilk oda
+      const firstRoom = rooms[0];
+      const matchedGuestsFirst = [
+        ...checkIns,
+        ...stayingGuests
+      ].filter(g => g.room === firstRoom && g.name);
+      const guestNamesFirst = matchedGuestsFirst.map(g => capitalizeFullName(g.name)).join(', ');
+      
+      // Girişler bölümündeki odaları tespit et
+      const checkInRooms = checkIns
+        .filter(guest => guest.room && guest.name)
+        .map(guest => guest.room);
+      
+      // İlk oda için giriş işareti kontrolü
+      const isCheckInRoom = checkInRooms.includes(firstRoom);
+      const roomDisplay = isCheckInRoom ? `${firstRoom} ⭐` : firstRoom;
+      
+      tableRows += `
+        <tr>
+          <td rowspan="${totalRows}" style="border: 1px solid #000;">${type}</td>
+          <td style="border: 1px solid #000;">${roomDisplay}</td>
+          <td style="border: 1px solid #000;">${guestNamesFirst}</td>
+          <td style="border: 1px solid #000;"></td>
+          <td style="border: 1px solid #000;"></td>
+          <td style="border: 1px solid #000;"></td>
+          <td style="border: 1px solid #000;"></td>
+          <td style="border: 1px solid #000;"></td>
+          <td style="border: 1px solid #000;"></td>
+          <td style="border: 1px solid #000;"></td>
+        </tr>
+      `;
+      
+      // Kalan odalar
+      for (let i = 1; i < rooms.length; i++) {
+        const room = rooms[i];
+        const matchedGuests = [
+          ...checkIns,
+          ...stayingGuests
+        ].filter(g => g.room === room && g.name);
+        const guestNames = matchedGuests.map(g => capitalizeFullName(g.name)).join(', ');
+        
+        // Kalan oda için giriş işareti kontrolü
+        const isCheckInRoom = checkInRooms.includes(room);
+        const roomDisplay = isCheckInRoom ? `${room} ⭐` : room;
+        
+        tableRows += `
+          <tr>
+            <td style="border: 1px solid #000;">${roomDisplay}</td>
+            <td style="border: 1px solid #000;">${guestNames}</td>
+            <td style="border: 1px solid #000;"></td>
+            <td style="border: 1px solid #000;"></td>
+            <td style="border: 1px solid #000;"></td>
+            <td style="border: 1px solid #000;"></td>
+            <td style="border: 1px solid #000;"></td>
+            <td style="border: 1px solid #000;"></td>
+            <td style="border: 1px solid #000;"></td>
+            <td style="border: 1px solid #000;"></td>
+          </tr>
+        `;
+      }
+    });
+  
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html lang="tr">
+      <head>
+        <meta charset="UTF-8">
+        <title>Oda Durumu Raporu - ${formattedDate}</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+          th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+          th { background-color: #f2f2f2; }
+          .print-btn {
+            display: block;
+            margin: 20px 0;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+          }
+          @media print {
+            .print-btn { display: none; }
+            th, td { border: 1px solid #000 !important; }
+          }
+        </style>
+      </head>
+      <body>
+        <h2>Oda Durumu Raporu</h2>
+        <button class="print-btn" onclick="window.print()">Yazdır</button>
+        <table style="width: 100%; table-layout: fixed; border-collapse: collapse; border: 1px solid black;">
+          <thead>
+            <tr>
+              <th rowspan="3" style="width: 12%;">Oda Tipi</th>
+              <th rowspan="3" style="width: 12%;">Oda Adı</th>
+              <th rowspan="3" style="width: 20%;">Ad-Soyad</th>
+              <th rowspan="2" colspan="2" style="width: 12%;">Sayı</th>
+              <th colspan="2" style="width: 12%;">Akşam Yemeği</th>
+              <th colspan="2" style="width: 12%;">Kahvaltı</th>
+              <th rowspan="3" style="width: 20%;">Telefon</th>
+            </tr>
+            <tr>
+              <th>Var</th>
+              <th>Yok</th>
+              <th>Var</th>
+              <th>Yok</th>
+            </tr>
+            <tr>
+              <th>Yetişkin</th>
+              <th>Çocuk</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${tableRows}
+          </tbody>
+        </table>
+      </body>
+      </html>
+    `;
+  
+    printWindow.document.open();
+    printWindow.document.write(htmlContent);
+    printWindow.document.close();
+  };
+  
+  
+  
+
   return (
     <div className="container mt-3">
       <div className="d-flex justify-content-between align-items-center mb-4">
@@ -154,17 +337,22 @@ ${date} / ${day}
           {checkIns.map((checkIn, index) => (
             <div className="form-row mb-2" key={index}>
               <div className="col">
-                <input
-                  type="text"
+                <select
                   className="form-control"
-                  placeholder="Oda"
                   value={checkIn.room}
                   onChange={(e) => {
                     const newCheckIns = [...checkIns];
                     newCheckIns[index].room = e.target.value;
                     setCheckIns(newCheckIns);
                   }}
-                />
+                >
+                  <option value="">Oda Seçin</option>
+                  {availableRooms
+                    .filter(room => !selectedCheckInRooms.includes(room) || room === checkIn.room)
+                    .map((room) => (
+                      <option key={room} value={room}>{room}</option>
+                    ))}
+                </select>
               </div>
               <div className="col">
                 <input
@@ -215,17 +403,20 @@ ${date} / ${day}
           {stayingGuests.map((guest, index) => (
             <div className="form-row mb-2" key={index}>
               <div className="col">
-                <input
-                  type="text"
+                <select
                   className="form-control"
-                  placeholder="Oda"
                   value={guest.room}
                   onChange={(e) => {
                     const newGuests = [...stayingGuests];
                     newGuests[index].room = e.target.value;
                     setStayingGuests(newGuests);
                   }}
-                />
+                >
+                  <option value="">Oda Seçin</option>
+                  {allRooms.map((room) => (
+                    <option key={room} value={room}>{room}</option>
+                  ))}
+                </select>
               </div>
               <div className="col">
                 <input
@@ -276,17 +467,22 @@ ${date} / ${day}
           {checkOuts.map((checkOut, index) => (
             <div className="form-row mb-2" key={index}>
               <div className="col">
-                <input
-                  type="text"
+                <select
                   className="form-control"
-                  placeholder="Oda"
                   value={checkOut.room}
                   onChange={(e) => {
                     const newCheckOuts = [...checkOuts];
                     newCheckOuts[index].room = e.target.value;
                     setCheckOuts(newCheckOuts);
                   }}
-                />
+                >
+                  <option value="">Oda Seçin</option>
+                  {checkOutRooms
+                    .filter(room => !selectedCheckOutRooms.includes(room) || room === checkOut.room)
+                    .map((room) => (
+                      <option key={room} value={room}>{room}</option>
+                    ))}
+                </select>
               </div>
               <div className="col">
                 <input
@@ -337,11 +533,14 @@ ${date} / ${day}
         <div className="d-flex gap-2 mb-3">
           <button className="btn btn-primary" onClick={generateReport}>Raporu Oluştur</button>
           <button className="btn btn-secondary" onClick={handleCopy} disabled={!reportMessage}>Raporu Kopyala</button>
+          <button className="btn btn-success" onClick={printRoomReport}>Oda Tablosu Oluştur</button>
         </div>
         <pre className="report-preview">{reportMessage}</pre>
       </div>
+
     </div>
   );
 };
 
 export default Report;
+

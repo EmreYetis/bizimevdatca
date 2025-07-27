@@ -12,10 +12,27 @@ const capitalizeFullName = (fullName) => {
   return fullName.split(' ').map(name => capitalizeFirstLetter(name)).join(' ');
 };
 
+// Günü Türkçe formatta döndüren fonksiyon
+const getDayOfWeek = (dateString) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  const days = ["Pazar", "Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma", "Cumartesi"];
+  return days[date.getDay()];
+};
+
 const formatDate = (date) => {
   if (!date) return ''; // Eğer tarih yoksa boş döner
   const [year, month, day] = date.split('-'); // Tarihi parçalar
   return `${day}.${month}.${year}`; // Yeni format
+};
+
+// Tarih ve gün bilgisini formatlayan fonksiyon
+const formatDateWithDay = (date, isCheckIn = true) => {
+  if (!date) return '';
+  const formattedDate = formatDate(date);
+  const dayOfWeek = getDayOfWeek(date);
+  const timeInfo = isCheckIn ? "(Check-In: 14.00)" : "(Check-Out: 11.30)";
+  return `${formattedDate} ${dayOfWeek} ${isCheckIn ? "Giriş" : "Çıkış"}\n${timeInfo}`;
 };
 
 const ReservationConfirmation = () => {
@@ -94,8 +111,8 @@ const ReservationConfirmation = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
   
-    const formattedCheckInDate = formatDate(checkInDate);
-    const formattedCheckOutDate = formatDate(checkOutDate);
+    const formattedCheckInDate = formatDateWithDay(checkInDate, true);
+    const formattedCheckOutDate = formatDateWithDay(checkOutDate, false);
     const totalPrice = calculateTotalPrice();
     const depositAmount = totalPrice;
   
@@ -113,8 +130,8 @@ const ReservationConfirmation = () => {
 - ${capitalizeFullName(name)}
 - ${roomsSummary}
 
-- ${formattedCheckInDate} Giriş
-- ${formattedCheckOutDate} Çıkış
+- ${formattedCheckInDate}
+- ${formattedCheckOutDate}
 - ${nights} Gece
 - ${adults} Yetişkin
 ${childrenSummary}- ${mealPlan}
