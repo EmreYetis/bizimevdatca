@@ -298,8 +298,7 @@ ${date} / ${day}
               <th rowspan="3" style="width: 20%;">Telefon</th>
             </tr>
             <tr>
-              <th colspan="2">Akşam Yemeği</th>
-              <th colspan="2">Kahvaltı</th>
+
             </tr>
             <tr>
               <th>Yetişkin</th>
