@@ -182,30 +182,37 @@ ${date} / ${day}
     });
   
     let tableRows = '';
-  
-    Object.entries(roomTypes).forEach(([type, rooms]) => {
-      // Her oda tipi için sadece oda sayısı kadar satır span et
+
+    // Oda tipleri sırasını korumak için anahtarları diziye al
+    const roomTypeKeys = Object.keys(roomTypes);
+
+    Object.entries(roomTypes).forEach(([type, rooms], typeIdx) => {
       const totalRows = rooms.length;
-      
-            // İlk satır - oda tipi ve ilk oda
       const firstRoom = rooms[0];
       const matchedGuestsFirst = [
         ...checkIns,
         ...stayingGuests
       ].filter(g => g.room === firstRoom && g.name);
       const guestNamesFirst = matchedGuestsFirst.map(g => capitalizeFullName(g.name)).join(', ');
-      
-      // Girişler bölümündeki odaları tespit et
       const checkInRooms = checkIns
         .filter(guest => guest.room && guest.name)
         .map(guest => guest.room);
-      
-      // İlk oda için giriş işareti kontrolü
       const isCheckInRoom = checkInRooms.includes(firstRoom);
       const roomDisplay = isCheckInRoom ? `${firstRoom} ⭐` : firstRoom;
-      
+
+      // Kalın çizgi eklenmesi gereken satır mı?
+      let extraClass = '';
+      // İlk satır veya Vagon Ev'den Taş Ev'e veya Taş Ev'den Yamaç Ev'e geçerken
+      if (
+        typeIdx === 0 ||
+        (type === 'Taş Ev' && roomTypeKeys[typeIdx - 1] === 'Vagon Ev') ||
+        (type === 'Yamaç Ev' && roomTypeKeys[typeIdx - 1] === 'Taş Ev')
+      ) {
+        extraClass = 'section-border';
+      }
+
       tableRows += `
-        <tr>
+        <tr class="${extraClass}">
           <td rowspan="${totalRows}" style="border: 1px solid #000;">${type}</td>
           <td style="border: 1px solid #000;">${roomDisplay}</td>
           <td style="border: 1px solid #000;">${guestNamesFirst}</td>
@@ -218,8 +225,6 @@ ${date} / ${day}
           <td style="border: 1px solid #000;"></td>
         </tr>
       `;
-      
-      // Kalan odalar
       for (let i = 1; i < rooms.length; i++) {
         const room = rooms[i];
         const matchedGuests = [
@@ -227,16 +232,12 @@ ${date} / ${day}
           ...stayingGuests
         ].filter(g => g.room === room && g.name);
         const guestNames = matchedGuests.map(g => capitalizeFullName(g.name)).join(', ');
-        
-        // Kalan oda için giriş işareti kontrolü
         const isCheckInRoom = checkInRooms.includes(room);
         const roomDisplay = isCheckInRoom ? `${room} ⭐` : room;
-        
         tableRows += `
           <tr>
             <td style="border: 1px solid #000;">${roomDisplay}</td>
             <td style="border: 1px solid #000;">${guestNames}</td>
-            <td style="border: 1px solid #000;"></td>
             <td style="border: 1px solid #000;"></td>
             <td style="border: 1px solid #000;"></td>
             <td style="border: 1px solid #000;"></td>
@@ -270,9 +271,15 @@ ${date} / ${day}
             border-radius: 4px;
             cursor: pointer;
           }
+          .section-border td {
+            border-top: 3px solid #000 !important;
+          }
           @media print {
             .print-btn { display: none; }
             th, td { border: 1px solid #000 !important; }
+            .section-border td {
+              border-top: 3px solid #000 !important;
+            }
           }
         </style>
       </head>
@@ -286,19 +293,21 @@ ${date} / ${day}
               <th rowspan="3" style="width: 12%;">Oda Adı</th>
               <th rowspan="3" style="width: 20%;">Ad-Soyad</th>
               <th rowspan="2" colspan="2" style="width: 12%;">Sayı</th>
-              <th colspan="2" style="width: 12%;">Akşam Yemeği</th>
-              <th colspan="2" style="width: 12%;">Kahvaltı</th>
+              <th rowspan="2" colspan="2" style="width: 12%;">Akşam Yemeği</th>
+              <th rowspan="2" colspan="2" style="width: 12%;">Kahvaltı</th>
               <th rowspan="3" style="width: 20%;">Telefon</th>
             </tr>
             <tr>
-              <th>Var</th>
-              <th>Yok</th>
-              <th>Var</th>
-              <th>Yok</th>
+              <th colspan="2">Akşam Yemeği</th>
+              <th colspan="2">Kahvaltı</th>
             </tr>
             <tr>
               <th>Yetişkin</th>
               <th>Çocuk</th>
+              <th>Var</th>
+              <th>Yok</th>
+              <th>Var</th>
+              <th>Yok</th>
             </tr>
           </thead>
           <tbody>
