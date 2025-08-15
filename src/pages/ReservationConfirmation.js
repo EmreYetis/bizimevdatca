@@ -118,8 +118,59 @@ const ReservationConfirmation = () => {
   
     const childrenSummary = children > 0 ? `- ${children} Çocuk\n` : '';
 
-    // Oda özetini oluştur
-    const roomsSummary = rooms.map(room => room.type).join(' , ');
+    // Oda özetini oluştur ve her oda için linki ekle
+    const roomsWithLinks = rooms.map(room => {
+      let roomLink = '';
+      switch(room.type) {
+        case 'İskaroz Taş Oda':
+          roomLink = 'https://bizimevdatca.com/iskaroz-Tas-Oda.html';
+          break;
+        case 'İskorpit Taş Oda':
+          roomLink = 'https://bizimevdatca.com/iskorpit-Tas-Oda.html';
+          break;
+        case 'Lopa Taş Oda':
+          roomLink = 'https://bizimevdatca.com/Lopa-Tas-Oda.html';
+          break;
+        case 'İnceburun Vagon Ev':
+          roomLink = 'https://bizimevdatca.com/Inceburun-Vagon-Ev.html';
+          break;
+        case 'Gökliman Vagon Ev':
+          roomLink = 'https://bizimevdatca.com/Gokliman-Vagon-Ev.html';
+          break;
+        case 'Armutlusu Vagon Ev':
+          roomLink = 'https://bizimevdatca.com/Armutlusu-Vagon-Ev.html';
+          break;
+        case 'Çetisuyu Vagon Ev':
+          roomLink = 'https://bizimevdatca.com/Cetisuyu-Vagon-Ev.html';
+          break;
+        case 'İncirliin Vagon Ev':
+          roomLink = 'https://bizimevdatca.com/incirliin-Vagon-Ev.html';
+          break;
+        case 'Hurmalıbük Vagon Ev':
+          roomLink = 'https://bizimevdatca.com/Hurmalibuk-Vagon-Ev.html';
+          break;
+        case 'Değirmenbükü Vagon Ev':
+          roomLink = 'https://bizimevdatca.com/degirmenbuku-vagon-ev.html';
+          break;
+        case 'Kızılbük Vagon Ev':
+          roomLink = 'https://bizimevdatca.com/Kizilbuk-Vagon-Ev.html';
+          break;
+        case 'Sarıliman Vagon Ev':
+          roomLink = 'https://bizimevdatca.com/Sariliman-Vagon-Ev.html';
+          break;
+        case 'Yamaç Ev':
+          roomLink = 'https://bizimevdatca.com/Yamactaki-Ev.html';
+          break;
+        case 'Mengen Ev':
+          roomLink = 'https://bizimevdatca.com/mengen-ev-hizirsah.html';
+          break;
+        default:
+          roomLink = 'https://bizimevdatca.com';
+      }
+      return `${room.type}\n📸 ${roomLink}`;
+    });
+    
+    const roomsSummary = roomsWithLinks.join('\n\n');
   
     // Banka bilgilerini ilk odanın tipine göre belirle
     const bankDetails = rooms[0].type === 'Yamaç Ev' 
@@ -129,6 +180,8 @@ const ReservationConfirmation = () => {
     let summary = `
 - ${capitalizeFullName(name)}
 - ${roomsSummary}
+🚁 Drone görüntümüz:
+https://i.hizliresim.com/mklcp30.jpeg
 
 - ${formattedCheckInDate}
 - ${formattedCheckOutDate}
@@ -138,7 +191,10 @@ ${childrenSummary}- ${mealPlan}
 
 - Toplam Fiyat: ${totalPrice} ₺
 - Ön Ödeme: ${depositAmount} ₺${bankDetails}
-    `.trim();
+
+
+
+`.trim();
 
     setReservationSummary(summary);
   };
