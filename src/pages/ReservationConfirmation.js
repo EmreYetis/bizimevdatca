@@ -35,6 +35,12 @@ const formatDateWithDay = (date, isCheckIn = true) => {
   return `${formattedDate} ${dayOfWeek} ${isCheckIn ? "Giriş" : "Çıkış"}\n${timeInfo}`;
 };
 
+// Türkçe binlik ayıracı ile fiyat formatlama (ör: 30000 -> 30.000 ₺)
+const formatTRY = (value) => {
+  const numeric = Number(value) || 0;
+  return `${numeric.toLocaleString('tr-TR')} ₺`;
+};
+
 const ReservationConfirmation = () => {
   const [name, setName] = useState('');
   const [checkInDate, setCheckInDate] = useState('');
@@ -189,8 +195,8 @@ https://i.hizliresim.com/mklcp30.jpeg
 - ${adults} Yetişkin
 ${childrenSummary}- ${mealPlan}
 
-- Toplam Fiyat: ${totalPrice} ₺
-- Ön Ödeme: ${depositAmount} ₺${bankDetails}
+- Toplam Fiyat: ${formatTRY(totalPrice)}
+- Ön Ödeme: ${formatTRY(depositAmount)}${bankDetails}
 
 
 

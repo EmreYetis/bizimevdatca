@@ -31,7 +31,7 @@ const Report = () => {
   
   // Oda tiplerini ve adlarını burada tanımlayalım
   const roomTypes = {
-    'Vagon Ev': ['İnceburun', 'Gökliman', 'Armutlusu', 'Çetisuyu', 'İncirlin', 'Hurmalıbük', 'Sarıliman', 'Kızılbük', 'Değirmenbükü'],
+    'Vagon Ev': ['İnceburun', 'Gökliman', 'Armutlusu', 'Çetisuyu', 'İncirliin', 'Hurmalıbük', 'Sarıliman', 'Kızılbük', 'Değirmenbükü'],
     'Taş Ev': ['İskaroz', 'İskorpit', 'Lopa'],
     'Yamaç Ev': ['Yamaç']
   };
@@ -42,8 +42,7 @@ const Report = () => {
   // Tüm oda isimlerini düz bir liste haline getir (oda seçimleri için)
   const allRooms = [...Object.values(roomTypes).flat(), ...reportOnlyRooms];
   
-  // Raporlarda kullanılacak tüm odalar (oda tablosu hariç)
-  const allRoomsForReports = [...allRooms, ...reportOnlyRooms];
+  // Raporlarda kullanılacak tüm odalar için ayrı bir listeye ihtiyaç kalmadı
   
   // Konaklayanlar bölümünde dolu olan odaları al
   const occupiedRooms = stayingGuests

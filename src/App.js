@@ -27,7 +27,7 @@ function App() {
       <div className="row mt-5">
         <div className="col-md-4">
           <button 
-            className="btn btn-warning btn-block mb-3"
+            className="btn btn-warning w-100 mb-3"
             onClick={() => setSelectedComponent('report')}
           >
             Rapor
@@ -35,7 +35,7 @@ function App() {
         </div>
         <div className="col-md-4">
           <button 
-            className="btn btn-primary btn-block mb-3"
+            className="btn btn-primary w-100 mb-3"
             onClick={() => setSelectedComponent('reservation')}
           >
             Rezervasyon Onay
@@ -43,7 +43,7 @@ function App() {
         </div>
         <div className="col-md-4">
           <button 
-            className="btn btn-info btn-block mb-3"
+            className="btn btn-info w-100 mb-3"
             onClick={() => setSelectedComponent('kapigiris')}
           >
             Kapı Müşterisi
