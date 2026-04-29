@@ -187,6 +187,7 @@ ${date} / ${day}
     });
   
     let tableRows = '';
+    let checkInScheduleRows = '';
   
     // Sadece roomTypes objesindeki odaları kullan (Mengen Evi hariç)
     Object.entries(roomTypes).forEach(([type, rooms]) => {
@@ -254,6 +255,27 @@ ${date} / ${day}
         `;
       }
     });
+
+    const filteredCheckIns = checkIns.filter(guest => guest.room && guest.name);
+    if (filteredCheckIns.length > 0) {
+      checkInScheduleRows = filteredCheckIns
+        .map(
+          (guest) => `
+          <tr>
+            <td style="border: 1px solid #000;">${guest.room}</td>
+            <td style="border: 1px solid #000;">${capitalizeFullName(guest.name)}</td>
+            <td style="border: 1px solid #000; min-width: 120px;"></td>
+          </tr>
+        `
+        )
+        .join('');
+    } else {
+      checkInScheduleRows = `
+        <tr>
+          <td style="border: 1px solid #000;" colspan="3">Bugün giriş yapacak misafir bulunmuyor.</td>
+        </tr>
+      `;
+    }
   
     const htmlContent = `
       <!DOCTYPE html>
@@ -309,6 +331,19 @@ ${date} / ${day}
           </thead>
           <tbody>
             ${tableRows}
+          </tbody>
+        </table>
+        <h3 style="margin-top: 100px;">Bugün Giriş Yapacaklar</h3>
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+          <thead>
+            <tr>
+              <th style="width: 30%;">Oda İsmi</th>
+              <th style="width: 45%;">Kişi İsmi</th>
+              <th style="width: 25%;">Giriş Yapacağı Saat</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${checkInScheduleRows}
           </tbody>
         </table>
       </body>
