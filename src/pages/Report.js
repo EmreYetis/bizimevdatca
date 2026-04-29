@@ -36,11 +36,8 @@ const Report = () => {
     'Yamaç Ev': ['Yamaç']
   };
 
-  // Raporlarda görünecek ama oda tablosunda olmayacak odalar
-  const reportOnlyRooms = ['Mengen'];
-
   // Tüm oda isimlerini düz bir liste haline getir (oda seçimleri için)
-  const allRooms = [...Object.values(roomTypes).flat(), ...reportOnlyRooms];
+  const allRooms = [...Object.values(roomTypes).flat()];
   
   // Raporlarda kullanılacak tüm odalar için ayrı bir listeye ihtiyaç kalmadı
   
@@ -189,7 +186,7 @@ ${date} / ${day}
     let tableRows = '';
     let checkInScheduleRows = '';
   
-    // Sadece roomTypes objesindeki odaları kullan (Mengen Evi hariç)
+    // Oda tablosu: roomTypes içindeki odalar
     Object.entries(roomTypes).forEach(([type, rooms]) => {
       // Her oda tipi için sadece oda sayısı kadar satır span et
       const totalRows = rooms.length;

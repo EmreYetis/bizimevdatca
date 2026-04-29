@@ -123,9 +123,13 @@ const ReservationConfirmation = () => {
     const depositAmount = totalPrice;
   
     const childrenSummary = children > 0 ? `- ${children} Çocuk\n` : '';
+    const hasYamacEv = rooms.some(room => room.type === 'Yamaç Ev');
 
-    // Oda özetini oluştur ve her oda için linki ekle
+    // Oda özetini oluştur ve her oda için linki ekle (Yamaç Ev: görsel linki yok)
     const roomsWithLinks = rooms.map(room => {
+      if (room.type === 'Yamaç Ev') {
+        return room.type;
+      }
       let roomLink = '';
       switch(room.type) {
         case 'İskaroz Taş Oda':
@@ -164,12 +168,6 @@ const ReservationConfirmation = () => {
         case 'Sarıliman Vagon Ev':
           roomLink = 'https://bizimevdatca.com/Sariliman-Vagon-Ev.html';
           break;
-        case 'Yamaç Ev':
-          roomLink = 'https://bizimevdatca.com/Yamactaki-Ev.html';
-          break;
-        case 'Mengen Ev':
-          roomLink = 'https://bizimevdatca.com/mengen-ev-hizirsah.html';
-          break;
         default:
           roomLink = 'https://bizimevdatca.com';
       }
@@ -183,13 +181,17 @@ const ReservationConfirmation = () => {
       ? `\n\nHESAP ADI:\nSERKAN SOYTOK - MURAT CENNET\n\nİBAN:\nTR29 0006 4000 0013 6600 3265 59\n\nGönderim sonrasında dekontunuzu rica ederiz`
       : `\n\nHESAP ADI:\nZorlu yavuz aydeniz bizimev\n\nİBAN:\nTR86 0006 4000 0013 6600 3774 28\n\nİş Bankası Datça şubesi\n\nGönderim sonrasında dekontunuzu rica ederiz`;
   
+    const droneBlock = hasYamacEv
+      ? ''
+      : `🚁 Drone görüntümüz:
+https://i.hizliresim.com/mklcp30.jpeg
+
+`;
+
     let summary = `
 - ${capitalizeFullName(name)}
 - ${roomsSummary}
-🚁 Drone görüntümüz:
-https://i.hizliresim.com/mklcp30.jpeg
-
-- ${formattedCheckInDate}
+${droneBlock}- ${formattedCheckInDate}
 - ${formattedCheckOutDate}
 - ${nights} Gece
 - ${adults} Yetişkin
@@ -296,7 +298,6 @@ ${childrenSummary}- ${mealPlan}
                     <option value="Kızılbük Vagon Ev">Kızılbük Vagon Ev</option>
                     <option value="Sarıliman Vagon Ev">Sarıliman Vagon Ev</option>
                     <option value="Yamaç Ev">Yamaç Ev</option>
-                    <option value="Mengen Ev">Mengen Ev</option>
                   </select>
                 </div>
               </div>
