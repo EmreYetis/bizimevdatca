@@ -273,6 +273,28 @@ ${date} / ${day}
         </tr>
       `;
     }
+    let checkOutScheduleRows = '';
+const filteredCheckOuts = checkOuts.filter(guest => guest.room && guest.name);
+if (filteredCheckOuts.length > 0) {
+  checkOutScheduleRows = filteredCheckOuts
+    .map(
+      (guest) => `
+      <tr>
+        <td style="border: 1px solid #000;">${guest.room}</td>
+        <td style="border: 1px solid #000;">${capitalizeFullName(guest.name)}</td>
+        <td style="border: 1px solid #000; min-width: 120px;"></td>
+        <td style="border: 1px solid #000; text-align: center;"><input type="checkbox" style="width: 18px; height: 18px; cursor: pointer;" /></td>
+      </tr>
+    `
+    )
+    .join('');
+} else {
+  checkOutScheduleRows = `
+    <tr>
+      <td style="border: 1px solid #000;" colspan="4">Bugün çıkış yapacak misafir bulunmuyor.</td>
+    </tr>
+  `;
+}
   
     const htmlContent = `
       <!DOCTYPE html>
@@ -343,6 +365,20 @@ ${date} / ${day}
             ${checkInScheduleRows}
           </tbody>
         </table>
+        <h3 style="margin-top: 100px;">Bugün Çıkış Yapacaklar</h3>
+<table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+  <thead>
+    <tr>
+      <th style="width: 25%;">Oda İsmi</th>
+      <th style="width: 35%;">Misafir İsmi</th>
+      <th style="width: 20%;">Kalan Bakiye</th>
+      <th style="width: 20%; text-align: center;">Çıkış Yapıldı</th>
+    </tr>
+  </thead>
+  <tbody>
+    ${checkOutScheduleRows}
+  </tbody>
+</table>
       </body>
       </html>
     `;
